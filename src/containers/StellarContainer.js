@@ -2,6 +2,8 @@ import Stellar from "stellar-sdk";
 var server = new Stellar.Server("https://horizon-testnet.stellar.org");
 import axios from 'axios';
 
+const server = new Stellar.Server("https://horizon-testnet.stellar.org");
+
 class StellarContainer {
   constructor(path) {}
   createAccount() {
@@ -56,6 +58,20 @@ async changeTrust(trustorSecret, asset, issuerPublicKey){
   }
 }
 
+
+  async checkBalance(publicKey) {
+    try {
+      return await server.loadAccount(publicKey)
+
+      // await axios.get("/friendbot", {
+      //   baseURL: "https://horizon-testnet.stellar.org",
+      //   params: { addr: publicKey },
+      // });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  
 
 }
 
