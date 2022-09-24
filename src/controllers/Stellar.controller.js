@@ -58,4 +58,21 @@ const checkBalance = async (req, res = response) => {
   }
 };
 
-export { createAccount, fundAccount, checkBalance, setTrustline };
+const makePayment = async (req, res = response) => {
+  const { senderKey, receiverPublicKey, amount }= req.body;
+  // console.log( senderKey, receiverPublicKey )
+
+  try {
+    const payment = await StellarContainer.makePayment( senderKey, receiverPublicKey, amount );
+    res.json(
+      payment
+    );
+  } catch (error) {
+    console.log(error.message)
+    res.json({
+      msg: "No se pudo generar el pago",
+    });
+  }
+};
+
+export { createAccount, fundAccount, checkBalance, setTrustline, makePayment };

@@ -2,7 +2,11 @@ import express from "express";
 const router = express.Router();
 const {
     // setTrustline
+    makePayment
 } = await import('../controllers/Stellar.controller.js')
+
+
+router.put("/payment", makePayment);
 
 // router.post("/create-trustline", setTrustline);
 
