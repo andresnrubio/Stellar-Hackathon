@@ -2,13 +2,17 @@ import express from "express";
 const router = express.Router();
 const {
     createAccount,
-    fundAccount
+    fundAccount,
+    checkBalance
 } = await import('../controllers/Stellar.controller.js')
 
 router.post("/create", createAccount);
 
 router.put("/:publicKey", fundAccount);
 
+router.get("/:publicKey", checkBalance);
+
+// /.well-known/stellar.toml
 
 // router.delete("/:id", deleteCartById);
 
