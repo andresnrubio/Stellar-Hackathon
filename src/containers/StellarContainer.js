@@ -1,8 +1,7 @@
 import Stellar from "stellar-sdk";
-var server = new Stellar.Server("https://horizon-testnet.stellar.org");
 import axios from 'axios';
-
 const server = new Stellar.Server("https://horizon-testnet.stellar.org");
+
 
 class StellarContainer {
   constructor(path) {}
@@ -25,6 +24,15 @@ class StellarContainer {
       console.log(error.message);
     }
   }
+
+  async checkBalance(publicKey) {
+    try {
+      return await server.loadAccount(publicKey)
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  
 
 async changeTrust(trustorSecret, asset, issuerPublicKey){
   try {
@@ -49,7 +57,6 @@ async changeTrust(trustorSecret, asset, issuerPublicKey){
     transaction.sign(trustor);
     return server.submitTransaction(transaction);
   })
-  .then(console.log("deberia funcionar")) 
   .catch(function (error) {
     console.error("Error!", error);
   });
@@ -59,19 +66,32 @@ async changeTrust(trustorSecret, asset, issuerPublicKey){
 }
 
 
-  async checkBalance(publicKey) {
-    try {
-      return await server.loadAccount(publicKey)
 
-      // await axios.get("/friendbot", {
-      //   baseURL: "https://horizon-testnet.stellar.org",
-      //   params: { addr: publicKey },
-      // });
-    } catch (error) {
-      console.log(error.message);
-    }
+async enableFlags(issuerSecret){
+var issuingKeys = Stellar.Keypair.fromSecret(issuerSecret);
+
+server
+  .loadAccount(issuingKeys.publicKey())
+  .then(function (issuer) {
+    var transaction = new Stellar.TransactionBuilder(issuer, {
+      fee: 100,
+      networkPassphrase: Stellar.Networks.TESTNET,
+    })
+      .addOperation(
+        Stellar.Operation.setOptions({
+          setFlags: Stellar.AuthRevocableFlag | Stellar.AuthRequiredFlag,
+        }),
+      )
+      // setTimeout is required for a transaction
+      .setTimeout(2000)
+      .build();
+    transaction.sign(issuingKeys);
+    return server.submitTransaction(transaction);
+  })
+  .catch(function (error) {
+    console.error("Error!", error);
+  });
   }
-  
 
 }
 
