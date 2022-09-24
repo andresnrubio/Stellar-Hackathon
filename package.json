@@ -1,0 +1,20 @@
+{
+  "name": "node_server",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Api Node JS Base ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Andres Rubio",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "16.0.1",
+    "express": "4.18.1",
+    "router": "^1.3.7",
+    "stellar-sdk": "^10.3.0"
+  }
+}
