@@ -1,13 +1,12 @@
 import express from "express";
 const router = express.Router();
 const {
-    createAccount,
-    fundAccount
+    setTrustline
 } = await import('../controllers/Stellar.controller.js')
 
-router.post("/create", createAccount);
+router.post("/create-trustline", setTrustline);
 
-router.put("/:publicKey", fundAccount);
+// router.put("/:publicKey", fundAccount);
 
 // router.delete("/:id", deleteCartById);
 
